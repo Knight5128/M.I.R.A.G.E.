@@ -1,0 +1,92 @@
+# Background
+- A while after the end of Phase II, several cities have already been preliminarily established on Mars, each **permanently inhabited by a certain population**. By this time, technology has developed far beyond today's level. Humanity has achieved preliminary controlled nuclear fusion technology and can autonomously synthesize all resources needed to sustain life, including various equipment and building materials. The only requirements are abundant rocks and special minerals easily mined from the Martian surface and strata, and—**sufficient power**.
+- Power is indeed an essential "nutrient" to both keep the city alive and to enable the city's growth. As with any other resources today, it needs to be collected, transformed, and stored. Possible power sources include: **Concentrated Solar Power**, **Photovoltaics**, **Nuclear Power**.
+- From the current perspective, each city can achieve a certain degree of energy self-sufficiency, but a considerable portion of energy still needs to be provided by the central city. In the long run, for the **further expansion of future urban clusters**, to **reduce the energy supply pressure on the central city**, and to ensure that cities can **receive timely external energy assistance in times of crisis**, i.e., to connect cities into a unified whole rather than remaining isolated, **M.I.R.A.G.E** plans to select power plants within a certain range around the further urban clusters. This involves a comprehensive assessment of potential power plant locations, including indicators like *environmental suitability*, *difficulty of raw material acquisition*, etc. They also plan to establish the most cost-effective energy transportation network between these energy supply stations and cities.
+- After comprehensive consideration, **M.I.R.A.G.E** sets the following variables to establish a simplified cost-optimization model for the multi-energy allocation planning between different spots in the Martian urban cluster…
+
+
+- # **Objective Function Description**:
+    - Minimize the total cost of the energy transportation network per unit time, which includes the **total cost of energy production in cities** & **total cost of energy production in power plants** & **maintenance cost of energy transportation pipelines** & **energy transportation cost** (the fixed cost of constructing power plants **can be negligible in the long term**).
+        - The **stable energy flow** between points **i** and **j** in the pipeline is calculated based on average flow, i.e., $\frac{x_{ij}^{out} + x_{ji}^{out} + x_{ij}^{ins} + x_{ji}^{ins}}{2}$.
+    - The final cost of producing unit energy per unit time in any **city** is affected by the initial cost $C_{p}^{city}$, the city's level of development $\lambda_{city_{i}}^{dev}$, and the coefficient $\omega_{dev-cost}$  optimizing unit time unit energy production cost due to the level of development.
+        - In short, *the more developed the city, the stronger its ability to optimize production costs.*
+    - The final cost of producing unit energy per unit time in any **power plant** is influenced by the initial cost $C_{p}^{plant}$ and the production cost optimization index $\mu^{scale}_i$ related to the power plant's scale, which is positively correlated with the power plant's level.
+        - In short, *the higher the level of the power plant, the stronger its ability to optimize production costs.*
+
+- # **Constraint Assumptions**:
+    - ① Energy **losses** occur during transportation, and the transportation loss rate between any two points can be assessed based on *the specific environmental conditions of pipeline installation and other factors.*
+    - ② For **cities**, the sum of total energy input & self-produced amount must be **at least** equal to the sum of total energy output & self-consumption & required energy surplus.
+    - ③ For **power plants**, the sum of total energy input & net production must be **at least** equal to the sum of total energy output & required energy surplus.
+    - ④ If no energy flows between two points, the pipeline is not required to be installed, and the maintenance cost is **negligible**.
+    - ⑤ For different potential power plant locations, there is **a unique most suitable level of power plant to be constructed** at that location, and the **higher the level**, the **higher the upper limit of power production capacity & lower cost of each unit power produced** at that spot.
+
+
+# **Parameter Initialization Techniques**
+- In real-world scenarios, to use this model to solve the optimal energy allocation plan, it's necessary to conduct field measurements and preliminary evaluations of parameters such as **city and location coordinates**, **total city population**, **transportation loss rate** for each pipeline, **maintenance cost** for each pipeline, **energy transportation cost** for each pipeline, **most suitable energy supply station level** for each location, **cost optimization index** for each energy station, and **production capacity limit** for each energy station.
+- However, considering the current lack of reliable data sources, we use various kinds of initialization & estimation methods to get the input parameters this model needs. Relevant **functions** & **function descriptions** can be found in our CODE files.
+    - The explanation of each function is divided into *four parts* separated by blank lines:
+        - **①**<u>Function Purpose</u>
+        - **②**<u>Generation/Fitting Specific Approach</u>
+        - **③**<u>Return Values and Their Formats</u>
+        - **④**<u>Function Application Scenario Guide</u>
+
+
+# **Power Volume-Related Estimation**
+- To solve for the cost-optimal power production plan for power plants and the energy distribution plan between different locations, it's necessary to first determine each city's capacity to produce energy and its demand for energy.
+- In real cases, these can be estimated by **conducting regression analysis on past energy data in conjunction with the city's total population**. However, such analysis is often very complex and needs to consider many uncontrollable factors in reality.
+- Therefore, **M.I.R.A.G.E** decided:
+    - To estimate the energy production capacity of cities using **city total population** and **dependence on external energy** through *exponential fitting estimation*. **Specifically**, as the total population of a city increases, the incremental amount of energy produced per unit time shows a decreasing trend (diminishing marginal returns).
+        - $ p_{city_{i}} = c_1 \cdot (N_{city_{i}})^{\beta} \cdot \lambda_{city_{i}}^{dev} + \epsilon_i (\beta < 1) $
+    - To estimate the energy demand of cities using **city total population** and **level of development** through *exponential fitting estimation*. **Specifically**, as the total population of a city increases, the growth in energy consumption per unit time will gradually increase (the "network effect of energy", meaning the linear growth in population leads to a more than linear growth in connectivity needs, hence a higher growth rate in energy consumption).
+        - $d_{city_{i}} = c_2 \cdot (N_{city_{i}})^{\theta} \cdot \lambda_{city_{i}}^{dep} + \epsilon_i (\theta > 1)$
+- **M.I.R.A.G.E** also plans to set a **minimum energy surplus requirement** for each location (city and energy supply station) — **M.I.R.A.G.E** believes that, <u>on Mars, both energy stations and cities face many uncontrollable risk factors. To prepare for these potential future risks, each location must reserve and store a certain amount of energy for prevention.</u>
+    - For the required energy surplus of cities, **M.I.R.A.G.E** plans to use **city total population** and **level of development** for a *logarithmic & linear composite fitting estimation*.
+    - For energy supply stations, they don't need much energy surplus themselves, but the energy they store will be sent to cities in times of crisis to ensure the continuous operation of the cities, so the **total required energy surplus of all supply stations should be equivalent to the total required energy surplus of all cities**.
+        - $\xi_{city_i}= c_3 \cdot ln(N_{city_i}) \cdot \lambda_{city_{i}}^{dev} + c_4 \cdot \delta \cdot N_{city_i} \cdot \lambda_{city_{i}}^{dev} + \epsilon_i\quad (\delta<1)$
+        - $\sum_i \xi_{plant_i} ≈ \sum_i \xi_{city_i} \Rightarrow \xi_{plant_i} = \frac{\sum_i \xi_{city_i}}{n} + \epsilon_i$ 
+
+
+# **City Dev-Level & Dep-Level Estimation**
+- *"The larger the population of a city, the higher its level of development usually is."* Although many cities on Earth provide counterexamples, due to various economical, social, and historical factors. However, it can be inferred that on the frontier of human exploration in space — Mars — this correlation is **almost always correct**.
+- Because on Mars, a larger population might be indicative of a more established, resource-rich, and technologically advanced settlement, as it would require substantial infrastructure to support a larger number of inhabitants. Meanwhile, larger populations could also facilitate more significant technological and infrastructural investments, leading to more developed settlements.
+- While a city's demand for energy (and resources), along with its required energy surplus, **positively correlates** with its level of development, the city's ability to produce energy and materials is **not necessarily directly proportional to its development level**. In the early stages, cities heavily rely on external resources for development; as they grow, their ability to generate energy improves. However, further development may **lead to a focus shift towards innovation or technology**, relying on external, reliable energy sources instead of producing all energy internally.
+- However, the actual level of urban development and dependence on external energy sources are often difficult to measure, requiring complex evaluation processes. Therefore, we propose a certain method to **roughly estimate** these two indicators through the **total population of the city**. To be specific:
+  - For **Dev-levels**: Because it often represents **a combination of the completeness of city technology and the maturity of development**, so we assume that it is largely positively correlated with the total population of the city. And we also assume that each city has already reached a certain level of development, but due to technological limitations and future prospects, none have achieved "full development". So the "level of development" is valued between 2 predetermined factors[min_dev, max_dev]. And considering that in reality, a higher population in a region does not necessarily indicate a higher level of development, a fluctuation term is added.
+  - For **Dep-levels**: We assume that once a city develops to a certain stage, it will rely on external energy stations for a part of its energy needs. That is, the city does not need to build too many facilities for energy self-sufficiency but rather focuses on the development of other aspects (such as technology). So the "Dev-Level" ranges from [min_dep, max_dep] and represents **the proportion of the city's own production allocated to external cities or energy supply stations.** The "Dev-Level" reaches its minimum value when the city's development level is at min_dep_dev and gradually increases as the deviation from min_dep_dev increases. The increase in "Dev-Level" is positively correlated with the absolute deviation between the city's development level and min_dep_dev, with a correlation coefficient of gamma, which is an exogenous factor.
+  - Relevant **functions** & **function descriptions** can be found in our CODE files.
+
+
+# **Consistency Checking**
+- To add to the **consistency and reliability** of our results, we realized 2 different solving models(**RSOME & PYOMO**) later on and cross-validated the results outputed by these 2 models using multidimensional error calculation.
+- Relevant **functions** & **function descriptions** can be found in our CODE files.
+
+
+# **Power Network Visualization**
+- This model has the capability to visualize the *most cost-effective* **power production plan for cities and power plants** & **power transmittion network**.
+- In real-case applications, if the central city location is determined, a <font color=red>remote sensing satellite image of the Martian surface centered on the central city</font> can also be uploaded to this model. This enables a clearer understanding of the <u>population status</u>, <u>energy production situation</u>, and <u>energy transportation network layout</u> of the central city and surrounding points *against the backdrop of Mars' real terrain*.
+- Relevant visualization **functions** & **function descriptions** can be found in our CODE files.
+
+# **Model Limitations**
+- Currently, **M.I.R.A.G.E**'s optimization model for **Phase III** still has certain limitations. For example:
+    - A key assumption of the model is that **energy can and only be transferred via cities or power plants.** In reality, energy can be transferred without passing through cities or power plants. Some "energy transfer stations," though not capable of directly producing energy, can gather and redistribute energy with minimal energy requirements.
+    - The model **only provides an approximate estimate of the pipeline length between two points.** In reality, the energy transportation pipeline between two nodes is likely not laid out in a straight line but is a curved path.
+    - The model **only offers a very intuitive way of estimating energy demand and supply.** In reality, not only the total population of a city but also other factors such as *employment rate*, *consumption tendencies*, and *intelligence level* should be included in the estimation model as part of the regression variables.
+    - The model **does not consider the "additional cost" & "opportunity cost" of site selection planning and pipeline laying schemes.** This includes the cost of maintaining daily operations at the site and possible future relocation costs.
+    - The model **assumes that the energy transportation pipeline's loss rate is constant.** In reality, the pipeline's loss rate is likely to increase over time, requiring additional "maintenance costs" to appropriately reduce the loss rate.
+    - The model **assumes that the cost of producing each unit of energy at each location is constant.** In reality, the cost of capacity is likely to become cheaper as production scales up, and there should be *a non-linear relationship* between it and the capacity.
+    - The model **overlooks the costs of storing, outputting, and receiving energy.**
+    - The model's planning **lacks consideration for livability and future development**, as it can be seen that in our model, the output results of cities and power plants are interspersed geographically. In the real world, such a layout might limit further urban development, and it's very likely that designated areas would be set aside for the construction of power plants.
+
+
+# More Discussions —— <font color=grey>**What if**...?</font> 
+### ① **Optimal New City/Power Plant Site Selection**
+- In Phase III, we simulated various possible layouts for city and power plant locations, estimated various energy-related indicators for each city based on simulated total population, and then used the model to find the optimal energy transportation solution, presenting the results visually.
+- However, in future actual scenarios, the positions of cities and power plants in the coordinate system are **short-term fixed**, and over time, <u>new cities will be built, old cities may be abandoned, new potential locations for power plants will be identified, and locations for power plants in harsh environmental conditions will gradually be overlooked.</u> Therefore, we can use the above optimization model to **dynamically analyze the best locations for new city construction or power plant sites**, i.e., starting from existing real data, analyze how to further reduce the total cost per unit of time without significantly altering the current energy allocation distribution.
+
+### ② **Dynamic (Time Sequence) Required-Energy-Surplus Analysis**
+- In Phase III, we assumed that $\xi_{i}$ is constant and can be uniquely determined and maintained unchanged solely by **the number of locations**, **the total population of the city**, and **the level of urban development**. However, for further refinement, $\xi_{i}$ could be set to dynamically change over time, as the city's demand for energy surplus should vary at different times. During peak energy demand periods, the city needs more backup energy for emergencies; when the energy demand is lower, **a portion of the previously stored energy can be used to meet the city's regular energy needs**.
+- Therefore, the model can be further improved so that the energy surplus from a previous time period can serve as one of the sources of energy production, thereby correspondingly reducing the energy surplus requirements for the latter period. Since this involves knowledge of time-sequence analysis, this suggestion is only a further consideration at this point..
+
+### ③ **Geographical-Incurred Costs**
+- In Phase III, we have only categorized the power plants into several levels and simply differentiated their production capacity and maintenance costs. In real-world scenarios, not only power plants themselves can cause cost differences, but various factors related to the geographical environment, such as **the natural resource reserves, the ease of resource acquisition, and the intensity of sunlight** in a region, can also lead to significant differences in the cost of station construction, production capacity, and maintenance costs.
+- The model can then further incorporate these influencing factors for a comprehensive analysis. This way, we can first obtain data on a specific area's **altitude distribution**, **resource distribution**, and **climate conditions** through "actual exploration", and then reflect these data, which are highly related to geographical location and time, into the objective function, thereby obtaining results that are more in line with reality and of practical value.
