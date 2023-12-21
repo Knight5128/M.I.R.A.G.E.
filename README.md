@@ -26,12 +26,16 @@
   - *Starship Scheduling Problem*
   - *Warehouse Locating Problem*
   - ...
+
 - ## Phase 2
   - *Elevator Scheduling Problem*
   - *Metro Route Planning*
   - *Space-Travel Qualification Distribution Model Design*
   - ...
+
 - ## Phase 3
   - *Power Distribution Network Planning*
   - *Comet City Initiative*
   - ...
+
+# **Hope that some day this M.I.R.A.G.E. can become a R.E.A.L.I.T.Y !** 
