@@ -1,12 +1,13 @@
 # M.I.R.A.G.E.
-- This is a grand Martian Construction Plan inspired by Operations Research. The optimal goal is to **establish a city cluster on Mars & be fully prepared for further exploration**.
-- We created a fictional enterprise **M.I.R.A.G.E.**(*Mars Innovation & Research Associated General Establishment*) as the entity of the whole project.
+- This is a grand Mars Construction Plan inspired by Operations Research. The optimal goal is to **establish a city cluster on Mars & be fully prepared for further exploration**.
+- We've created a fictional enterprise **M.I.R.A.G.E.**(*Mars Innovation & Research Associated General Establishment*) as the entity of the whole project.
 - The project is still in its early stages, but it will be updated continuously in the long term.
 - *Complete Project* includes:
     - **envisionary optimization models** &
     - **code implementations** &
     - **integrated problem-solving software** &
     - other stuff
+- **Everyone** is welcomed to *share your ideas* & *make necessary modifications* & *point out new research directions and insights* so that we can ***build the future together!***
 ---
 # Acknowledgement
 - Special thanks to my other 3 teammates for their wonderful ideas in the early planning stages of this project.
