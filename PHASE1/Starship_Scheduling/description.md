@@ -1,29 +1,30 @@
+# Background
 - In order to build an initial habitable area, it is necessary to continuously send various resources(materials, equipment etc.) and manpower from Earth to Mars. The transport vehicle for these resources is the Starship. **Assuming** that various technologies related to the starship have been perfected through dozens of near-Earth orbital flight tests, lunar round-trip tests, and one-way Mars tests, the starship is now fully capable of undertaking the task of transporting resources from Earth to Mars. At the same time, **assuming** that the production line of the starship has been scaled up, it is currently the most efficient and cost-efficient means of transportation between Earth and Mars.
 - Now that we have set the means of transporting resources, here we'll explain when these rockets will be launched. Since both Earth and Mars orbit around the Sun and their **orbital radii and periods differ significantly**, based on previous experience, spacecraft intended to be launched from Earth to Mars, while seeking to simplify operations and save fuel, thus increasing the success rate and reducing risks, must travel via an approximate **"Hohmann transfer orbit"** between Earth and Mars. To enter this orbit, the spacecraft must be launched from Earth when the angle between Earth, the Sun, and Mars is within a specific range, which is **a typical "launch window"**. With Earth's orbital period being about 365 days and Mars' about 686 days, these launch windows open approximately **every 26 months** and last between 1 to 3 months. In this project, **M.I.R.A.G.E** **specifies** that all starships can only be launched within these launch windows.
 - When **M.I.R.A.G.E** announced its grand vision to the public, many were still skeptical. Although many forward-thinking businessmen invested a certain amount of funds, the majority of people were just watching. Therefore, the funds raised were far from sufficient to support the entire project. But **M.I.R.A.G.E** knows that as long as preliminary results are achieved, as long as a basic habitable area and research center are successfully established on Mars, people will be more drawn to the future, and subsequent development will be assured. Therefore, **M.I.R.A.G.E** decides to plan a **strict time limit T** for the implementation of Phase I, hoping to **minimize the total cost of this phase**, and sets a certain amount of resource transportation demand for each window period within this limit (*these demands generally show an increasing trend*).
-- Here, to simplify the problem, **M.I.R.A.G.E** combines different types of resources and manpower into a single resource metric — $CityUnit(CU)$. A City Unit is **the food**(dehydrated)**, machinery, equipment and further development resource budget**(solar panels, spacesuits, medical supplies, Starlink communication satellites, crop seeds etc.) **required to add one human to the habitat**.
+- Here, to simplify the problem, **M.I.R.A.G.E** combines different types of resources and manpower into a single resource metric — CityUnit(CU)CityUnit(CU). A City Unit is **the food**(dehydrated)**, machinery, equipment and further development resource budget**(solar panels, spacesuits, medical supplies, Starlink communication satellites, crop seeds etc.) **required to add one human to the habitat**.
 - At the start of the project, there are already a certain number of Starships on Earth available for transporting resources. These initial parameters of the Starships are consistent, with their payload and various technical indicators being roughly the same, including **payload, resource retention rates**. Considering the vast distance between Earth and Mars, a part of the resources will inevitably be worn out or damaged during transportation.
 - Launching starships requires dedicated launch pads, and each launch pad has a definite number of total launch tasks it can undertake within a window period. Moreover, **M.I.R.A.G.E** has already planned the construction schedule of launch pads for each launch window period of the project, i.e., the number of launch pads in each window period has been predetermined. Of course, at the start of the project, there were already a certain number of launch pads on Earth.
-- Next, it is necessary to plan how many starships $x_t$ to launch and how many new starships $y_t$ to manufacture as a supplement in each window period. Due to the standardization of starship production and launch processes, **M.I.R.A.G.E** assumes that the initial unit costs of building a new starship and launching a starship are fixed values. 
+- Next, it is necessary to plan how many starships xtx_t to launch and how many new starships yty_t to manufacture as a supplement in each window period. Due to the standardization of starship production and launch processes, **M.I.R.A.G.E** assumes that the initial unit costs of building a new starship and launching a starship are fixed values. 
 - Moreover, due to the large timespan of the project, **M.I.R.A.G.E** has ample time for **technological innovation and iteration**, which will also incur additional costs. By investing a certain amount of funds in **technological research and development** or **investing in emerging technology companies** in the current period, **M.I.R.A.G.E**'s internal technological strength will gradually strengthen. The advancement of technological strength will also be reflected in several significant aspects:
-  - $\downarrow$ decrease in the cost of launching starships
-  - $\downarrow$ decrease in the cost of manufacturing starships
-  - $\uparrow$ increase in the resource retention rate during transportation
-  - $\uparrow$ increase in the payload (measured in $CU$ units) 
-  - $\uparrow$ increase the utility of each unit of $CU$ (extend lifespan of equipment; increase shelf-time of food etc.)
-  - Here, **M.I.R.A.G.E** decides to concentrate the technological levels of different fields into a single index — namely the <font color=red>**"comprehensive technology index"** $g$</font>. At the start of the project, the initial value of the comprehensive technology index is set at 1, and as more and more funds are invested in technological research and development, $g_t$ will grow year by year. **Specifically**, in this model, the relationship between $g_t$ and the aforementioned variables it affects is **linear**.
-- Additionally, due to supply limitations of a key component of the starship — the Raptor engine — **M.I.R.A.G.E** will have a given upper limit on the number of starships manufactured in each launch window, denoted as $m_t$.
+  - ↓\downarrow decrease in the cost of launching starships
+  - ↓\downarrow decrease in the cost of manufacturing starships
+  - ↑\uparrow increase in the resource retention rate during transportation
+  - ↑\uparrow increase in the payload (measured in CUCU units) 
+  - ↑\uparrow increase the utility of each unit of CUCU (extend lifespan of equipment; increase shelf-time of food etc.)
+  - Here, **M.I.R.A.G.E** decides to concentrate the technological levels of different fields into a single index — namely the <font color=red>**"comprehensive technology index"** gg</font>. At the start of the project, the initial value of the comprehensive technology index is set at 1, and as more and more funds are invested in technological research and development, gtg_t will grow year by year. **Specifically**, in this model, the relationship between gtg_t and the aforementioned variables it affects is **linear**.
+- Additionally, due to supply limitations of a key component of the starship — the Raptor engine — **M.I.R.A.G.E** will have a given upper limit on the number of starships manufactured in each launch window, denoted as mtm_t.
 - Integrating the above assumptions and background, **M.I.R.A.G.E** plans to set the following variables and parameters, constructing a cost-optimized dynamic programming model for a rocket construction and launch strategy that completes specified transportation targets within a certain time frame…
 
 
-## **Parameter Initialization Techniques**
+# **Parameter Initialization Techniques**
 - Technological progress cannot be achieved overnight, so **investment in technological research and development** often does not proportionally correlate with the **technological growth** it brings.
-- To obtain a relatively certain solution from the model, this scenario sets $K$ "technology investment thresholds" and assigns $K$ corresponding "stable comprehensive technology index growth amounts", roughly defining the relationship between the two.
+- To obtain a relatively certain solution from the model, this scenario sets KK "technology investment thresholds" and assigns KK corresponding "stable comprehensive technology index growth amounts", roughly defining the relationship between the two.
 - In actual situations, if such simplifications are made to the problem, further specific thresholds and growth amounts need to be evaluated and set based on indicators like **talent reserves, technological reserves, and investment efficiency**. Here, the following method is adopted to pre-initialize the corresponding **investment thresholds** and **technology index growth rates** in two comparison tables.
 
 
-## **Some remarks on results**
-- From the simulation scenarios obtained above, we find that the **incentive to invest in technology development gradually decreases** $\downarrow$ as the project deadline approaches. This is a reasonable phenomenon when the overall project duration is **relatively short**, as the technological level cannot **demonstrate its key role in the early stages of the project**, such as *cost reduction* and *increasing payload*.
+# **Some remarks on results**
+- From the simulation scenarios obtained above, we find that the **incentive to invest in technology development gradually decreases** ↓\downarrow as the project deadline approaches. This is a reasonable phenomenon when the overall project duration is **relatively short**, as the technological level cannot **demonstrate its key role in the early stages of the project**, such as *cost reduction* and *increasing payload*.
 - Due to *computational power* and *model architecture limitations*, this project did not set up and solve for medium to long-term problem contexts. However, it should be noted that **under *ideal conditions*, when the set project time span is *longer*, the optimal decisions output by this model will be more *diverse and constructive.***
 
 
@@ -39,23 +40,23 @@
 
 # More Discussions —— <font color=grey>**What if**...?</font> 
 
-### ① **Divide <font color=red>g</font> into various technological aspects**
-- Instead of using a single matrix $g$ to represent the overall level of technology, we can decompose $g$ into technology indices of **multiple distinct fields**, such as $g_{earthdev}$, $g_{launch}$, $g_{manu}$, $g_{resource}$. Each of these technology indices possesses its own growth rate and is somewhat connected to the core technology index $g_{core}$.
+## ① **Divide <font color=red>g</font> into various technological aspects**
+- Instead of using a single matrix gg to represent the overall level of technology, we can decompose gg into technology indices of **multiple distinct fields**, such as gearthdevg_{earthdev}, glaunchg_{launch}, gmanug_{manu}, gresourceg_{resource}. Each of these technology indices possesses its own growth rate and is somewhat connected to the core technology index gcoreg_{core}.
 
-### ② **Aggregate Resource Requirement**
+## ② **Aggregate Resource Requirement**
 - Instead of setting a resource demand for each window period, a **total demand indicator** can be introduced, specifying the minimum amount of total resources to be **accumulated** & **transported** in each period and prior to that period.
-- Existing resourses on Mars will also grow at a rate $r_t$ per window period interval.
+- Existing resourses on Mars will also grow at a rate rtr_t per window period interval.
 - Additionally, the following new decision parameters can be set:
-    -  $\lambda$ :The positive correlation coefficient between the current comprehensive technology index $g_{t}$ and the current resource self-growth rate $r_{t}$.
-	- $d_{t}$ :The total demand for $City Unit$ in the current period $\implies$ the total $City Unit$ demand to be met by period $t$.
-	- $I_{t}$ :The total stock of $City Unit$ at the beginning of the period.
-	- $r_{t}=1+\lambda\cdot(g_{t}-1)$
-	- $I_{t+1} = I_{t} \cdot (1+r_{t}) \ + \ x_{t} \cdot p_{t} \cdot g_{t} \cdot \theta_{t}$
-	- $I_{t+1} \geq d_{t}$
+    -  λ\lambda :The positive correlation coefficient between the current comprehensive technology index gtg_{t} and the current resource self-growth rate rtr_{t}.
+	- dtd_{t} :The total demand for CityUnitCity Unit in the current period ⟹\implies the total CityUnitCity Unit demand to be met by period tt.
+	- ItI_{t} :The total stock of CityUnitCity Unit at the beginning of the period.
+	- rt=1+λ⋅(gt−1)r_{t}=1+\lambda\cdot(g_{t}-1)
+	- It+1=It⋅(1+rt) + xt⋅pt⋅gt⋅θtI_{t+1} = I_{t} \cdot (1+r_{t}) \ + \ x_{t} \cdot p_{t} \cdot g_{t} \cdot \theta_{t}
+	- It+1≥dtI_{t+1} \geq d_{t}
   
-### ③ **Maintenance Cost of Launch Pads**
+## ③ **Maintenance Cost of Launch Pads**
 - In real scenarios, launch pads and other launch-related equipment require **regular maintenance and inspection**. If the launch pad is not repaired and maintained for a certain period, both the efficiency and safety of the launch will **gradually decrease**, and the maximum number of launches that can be accommodated within a launch window will also **gradually reduce**.
 - Therefore, the cost of maintenance for the launch pad and various other equipment can be further included as a decision variable for each launch window.
 
-### ④ **Fixed T, Min cost ——> Fixed cost limit, Min T**
+## ④ **Fixed T, Min cost ——> Fixed cost limit, Min T**
 - The optimization direction can be further altered from **specifying a total time limit, aiming to minimize project cost** to **setting a total project budget, aiming to complete the project as early as possible**.
